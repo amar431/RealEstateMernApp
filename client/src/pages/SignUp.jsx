@@ -1,10 +1,14 @@
 import {Link,useNavigate} from 'react-router-dom'
 import { useState } from 'react'
+import {  toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 function SignUp() {
   const[formdata,setFormData] = useState({})
   const[error,setError] = useState(null)
   const[loading,setLoading] = useState(false)
   const navigate = useNavigate()
+  
   const handleChange = (e) =>{
 
     setFormData({
@@ -35,10 +39,18 @@ function SignUp() {
       setLoading(false)
       setError(null)
       navigate('/sign-in')
+      toast.success('Sign up successful!', {
+        position: 'top-right',
+        autoClose: 5000,
+      });
 
       } catch (error) {
         setLoading(false)
         setError(error.message)
+        toast.error(error.message, {
+          position: 'top-right',
+          autoClose: 5000,
+        });
       }
       
   }
@@ -68,7 +80,8 @@ function SignUp() {
           id="password"
           onChange={handleChange}
         />
-        <button disabled={loading} className="bg-cyan-500 hover:bg-cyan-600 p-3 rounded-lg uppercase text-white">
+        <button disabled={loading} 
+         className="bg-cyan-500 hover:bg-cyan-600 p-3 rounded-lg uppercase text-white">
          {loading?"loading":'Sign Up'}
         </button>
       </form>
