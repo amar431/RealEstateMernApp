@@ -3,6 +3,7 @@ import { useState } from 'react'
 import {  toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
+import Oauth from '../components/Oauth';
 function SignUp() {
   const[formdata,setFormData] = useState({})
   const[error,setError] = useState(null)
@@ -84,6 +85,7 @@ function SignUp() {
          className="bg-cyan-500 hover:bg-cyan-600 p-3 rounded-lg uppercase text-white">
          {loading?"loading":'Sign Up'}
         </button>
+        <Oauth  />
       </form>
       <div className="mt-6">
         <p className="text-center text-gray-600">Already have an account?</p>

@@ -1,13 +1,17 @@
 import {Link,useNavigate} from 'react-router-dom'
 import { useState } from 'react'
 import {  toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { signInStart,signInSuccess,signInFailure } from '../redux/user/userSlice';
 
 import 'react-toastify/dist/ReactToastify.css';
+import Oauth from '../components/Oauth';
+
 function SignIn() {
   const[formdata,setFormData] = useState({})
-  const[error,setError] = useState(null)
-  const[loading,setLoading] = useState(false)
+  const {loading,error} = useSelector((state)=>state.user)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   
   const handleChange = (e) =>{
 
@@ -19,7 +23,7 @@ function SignIn() {
   const handleSubmit = async(e)=>{
       e.preventDefault()
       try {
-        setLoading(true)
+      dispatch(signInStart())
       const res = await fetch('/api/auth/signin',
       {
         method:"POST",
@@ -32,12 +36,10 @@ function SignIn() {
       const data = await res.json()
       
       if(data.success === false){
-        setError(data.message)
-        setLoading(false)
+        dispatch(signInFailure(data.message))
         return
       }
-      setLoading(false)
-      setError(null)
+     dispatch(signInSuccess(data))
       navigate('/')
       toast.success('Sign In successful!', {
         position: 'top-right',
@@ -45,7 +47,7 @@ function SignIn() {
       });
 
       } catch (error) {
-        setLoading(false)
+        dispatch(signInFailure(error.message))
         
         toast.error("not success", {
           position: 'top-right',
@@ -78,6 +80,7 @@ function SignIn() {
          className="bg-cyan-500 hover:bg-cyan-600 p-3 rounded-lg uppercase text-white">
          {loading?"loading":'Sign In'}
         </button>
+        <Oauth  />
       </form>
       <div className="mt-6">
         <p className="text-center text-gray-600">Dont have an account?</p>
