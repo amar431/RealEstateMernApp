@@ -53,7 +53,7 @@ function SignIn() {
           position: 'top-right',
           autoClose: 5000,
         });
-        setError(error.message)
+        error(error.message)
       }
       
   }
